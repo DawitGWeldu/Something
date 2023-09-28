@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Select from "../Select/Select";
-import { useHMSActions} 
-         from '@100mslive/hms-video-react';
+import { useHMSActions }
+  from '@100mslive/hms-video-react';
 import getToken from "../../utils/getToken";
 
 
 
-  const JoinForm = ({handleStart}) => {
+const JoinForm = ({ handleStart }) => {
 
   const hmsActions = useHMSActions();
   const [userName, setUserName] = useState("");
@@ -14,7 +14,17 @@ import getToken from "../../utils/getToken";
 
 
   const joinRoom = () => {
-    // Join form
+    getToken(role).then((token) => {
+      hmsActions.join({
+        userName: userName || 'Anonymous',
+        authToken: token,
+        settings: {
+          isAudioMuted: true,
+        },
+      });
+    }).catch((error) => {
+      console.log('Token API Error', error);
+    });
 
   };
 
@@ -24,8 +34,8 @@ import getToken from "../../utils/getToken";
     <div className="w-screen h-screen flex items-center justify-center bg-gray-800">
       <div className="w-64 h-32 p-4 rounded-lg">
         <form
-           onSubmit={(e) => {
-             e.preventDefault();
+          onSubmit={(e) => {
+            e.preventDefault();
           }}
         >
           <input
@@ -36,10 +46,10 @@ import getToken from "../../utils/getToken";
             placeholder="John Doe"
             required
           />
-           <Select state={{ role, setRole }} />
-          <button 
-          onClick={joinRoom} 
-          className="px-4 py-2 bg-blue-700 rounded-lg text-white">
+          <Select state={{ role, setRole }} />
+          <button
+            onClick={joinRoom}
+            className="px-4 py-2 bg-blue-700 rounded-lg text-white">
             Submit
           </button>
         </form>

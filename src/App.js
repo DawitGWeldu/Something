@@ -11,16 +11,17 @@ import {
 
 
 const App = () => {
-  
+
   const isConnected = useHMSStore(selectIsConnectedToRoom);
 
-  
+
 
   return (
-      <div className="App">
+    <div className="App">
 
-        <JoinForm /> 
-      </div>
+      {isConnected ? <Room /> : <JoinForm />}
+
+    </div>
   );
 }
 export default App;
